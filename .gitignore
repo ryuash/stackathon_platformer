@@ -1,0 +1,4 @@
+stackathon-assets/
+.import/
+*.log
+.DS_Store
