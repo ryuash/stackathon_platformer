@@ -2,7 +2,7 @@
 
 [ext_resource path="res://stackathon-assets/sheet.png" type="Texture" id=1]
 
-[node name="no-collision" type="Node2D" index="0"]
+[node name="no-collision" type="Node2D"]
 
 [node name="no-collission" type="Sprite" parent="." index="0"]
 

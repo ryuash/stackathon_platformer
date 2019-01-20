@@ -1,18 +1,18 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://movingPlatform.gd" type="Script" id=1]
+[ext_resource path="res://sidewaysPlatform.gd" type="Script" id=1]
 [ext_resource path="res://ground-tile.tres" type="TileSet" id=2]
 [ext_resource path="res://noCollision-tile.tres" type="TileSet" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 
 custom_solver_bias = 0.0
-extents = Vector2( 32, 7.96852 )
+extents = Vector2( 32, 7.92402 )
 
 [sub_resource type="Animation" id=2]
 
-resource_name = "lift"
-length = 4.0
+resource_name = "sideLift"
+length = 5.0
 loop = true
 step = 0.1
 tracks/0/type = "value"
@@ -22,23 +22,21 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 2, 2.1, 3.9, 4 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 2.4, 2.5, 2.6, 4.9, 5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 96 ), Vector2( 0, 96 ), Vector2( 0, -16 ), Vector2( 0, -16 ), Vector2( 0, 96 ), Vector2( 0, 96 ) ]
+"values": [ Vector2( 640, 0 ), Vector2( 640, 0 ), Vector2( 800, 0 ), Vector2( 800, 0 ), Vector2( 800, 0 ), Vector2( 640, 0 ), Vector2( 640, 0 ) ]
 }
 
-[node name="movingPlatform" type="Node2D"]
+[node name="sidewaysPlatform" type="Node2D"]
 
+position = Vector2( 737.435, 0 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Transform" ]
-__meta__ = {
-"_edit_group_": true
-}
 
 [node name="TileMap" type="TileMap" parent="." index="0"]
 
-position = Vector2( 0, 96 )
+position = Vector2( 640, 0 )
 mode = 0
 tile_set = ExtResource( 2 )
 cell_size = Vector2( 16, 16 )
@@ -55,7 +53,7 @@ collision_layer = 1
 collision_mask = 1
 occluder_light_mask = 1
 format = 1
-tile_data = PoolIntArray( 0, 13, 0, 1, 10, 0, 2, 11, 0, 3, 14, 0 )
+tile_data = PoolIntArray( 0, 16, 0, 1, 18, 0, 2, 18, 0, 3, 14, 0 )
 _sections_unfolded = [ "Transform" ]
 __meta__ = {
 "_edit_group_": true
@@ -63,7 +61,6 @@ __meta__ = {
 
 [node name="TileMap" type="TileMap" parent="TileMap" index="0"]
 
-position = Vector2( -16, 0 )
 mode = 0
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 16, 16 )
@@ -80,17 +77,20 @@ collision_layer = 1
 collision_mask = 1
 occluder_light_mask = 1
 format = 1
-tile_data = PoolIntArray( -65534, 0, 0 )
-_sections_unfolded = [ "Collision" ]
+tile_data = PoolIntArray( -65534, 15, 0 )
+_sections_unfolded = [ "Cell" ]
 
-[node name="KinematicBody2D" type="KinematicBody2D" parent="TileMap" index="1"]
+[node name="StaticBody2D" type="StaticBody2D" parent="TileMap" index="1"]
 
 input_pickable = false
 collision_layer = 1
 collision_mask = 1
-collision/safe_margin = 0.08
+constant_linear_velocity = Vector2( 0, 0 )
+constant_angular_velocity = 0.0
+friction = 1.0
+bounce = 0.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="TileMap/KinematicBody2D" index="0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TileMap/StaticBody2D" index="0"]
 
 position = Vector2( 32, 8 )
 shape = SubResource( 1 )
@@ -102,7 +102,7 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/lift = SubResource( 2 )
+anims/sideLift = SubResource( 2 )
 blend_times = [  ]
 
 
