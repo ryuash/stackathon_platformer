@@ -11,7 +11,6 @@ const FIREBALL = preload("res://fireBall.tscn")
 var velocity = Vector2()
 var is_dead = false
 var on_ladder = false
-var on_platform = false
 var is_attacking = false
 var delay = 0.3
 var timer = null
@@ -68,17 +67,6 @@ func _physics_process(delta):
 #	on_ladder = "ladder" in get_tile_on_position(position.x,position.y)
 
 	if is_dead == false && !win:
-#		talking
-#		if Input.is_action_just_pressed("ui_down"):
-#			print("i hit down input")
-#			if cont == 0:
-#				_speak("Congrats, you won")
-#			elif cont == 1:
-#				text_actual.queue_free()
-#				cont = 0
-#				return
-#			cont += 1
-			
 	#	walking
 		if(Input.is_action_pressed("ui_right")):
 			if sign($Position2D.position.x)== -1:
@@ -148,21 +136,14 @@ func _physics_process(delta):
 #
 
 func _on_Area2D_on_ladder():
+	print("on ladder")
 	on_ladder=true
 
 
 func _on_Area2D_off_ladder():
+	print("off ladder")
 	on_ladder=false
 
-
-func _on_RayCast2D_onPlatform():
-	on_platform=true
-#	GRAVITY=0
-
-
-func _on_RayCast2D_offPlatform():
-	on_platform=false
-#	GRAVITY=12
 
 func dead(attack):
 	health-=attack

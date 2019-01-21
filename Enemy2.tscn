@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Enemy2.gd" type="Script" id=1]
 [ext_resource path="res://stackathon-assets/extra-enemies/platformer slime_Animation 1_0.png" type="Texture" id=2]
@@ -31,7 +31,17 @@ animations = [ {
 custom_solver_bias = 0.0
 extents = Vector2( 6.19193, 13.1119 )
 
-[node name="Enemy2" type="KinematicBody2D"]
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 0.856262, 13.0051 )
+
+[sub_resource type="RectangleShape2D" id=4]
+
+custom_solver_bias = 0.0
+extents = Vector2( 0.761795, 13.2885 )
+
+[node name="Enemy2" type="KinematicBody2D" index="0"]
 
 input_pickable = false
 collision_layer = 1
@@ -64,6 +74,7 @@ _sections_unfolded = [ "Transform" ]
 
 [node name="Control" type="Control" parent="." index="3"]
 
+editor/display_folded = true
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
@@ -108,6 +119,41 @@ bus = "Master"
 
 position = Vector2( 0, -20 )
 
+[node name="left" type="Area2D" parent="." index="7"]
+
+editor/display_folded = true
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="left" index="0"]
+
+position = Vector2( -8.50215, 3.40085 )
+shape = SubResource( 3 )
+
+[node name="right" type="Area2D" parent="." index="8"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="right" index="0"]
+
+position = Vector2( 11.1473, 2.73958 )
+shape = SubResource( 4 )
+
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+
+[connection signal="area_entered" from="left" to="." method="_on_left_area_entered"]
+
+[connection signal="area_entered" from="right" to="." method="_on_right_area_entered"]
 
 

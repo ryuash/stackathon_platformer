@@ -11,13 +11,28 @@ var direction = 1
 var is_dead = false
 export(int)var health = 1
 export(int)var attack = 1
+var is_hit = false
+var hit_timer = null
+var delay = 0.2
+var hitDirection = null
 
 func _ready():
 	scale=size
 	$Control/lifeBar.startHealth(health)
+	hit_timer  = Timer.new()
+	hit_timer.set_wait_time(delay)
+	hit_timer.set_one_shot(true)
+	hit_timer.connect("timeout",self,"on_time_complete")
+	add_child(hit_timer)
+	
+func on_time_complete():
+	print("timer finish")
+	is_hit = false
+	hitDirection = null
 	
 func dead():
-	
+	is_hit=true
+	hit_timer.start()
 	health-= 1
 	$Control/lifeBar.enemyHealthChange(health)
 	if health <= 0:
@@ -41,13 +56,31 @@ func _physics_process(delta):
 			$AnimatedSprite.flip_h=false
 		else:
 			$AnimatedSprite.flip_h=true
+			
+		if is_hit:
+			if hitDirection == "left":
+				if direction == 1:
+					direction = -1
+					$AnimatedSprite.flip_h=true
+					velocity.x = 80 * direction
+				else:
+					$AnimatedSprite.flip_h=true
+					velocity.x = 80 * -direction
+			if hitDirection == "right":
+				if direction == 1:
+					$AnimatedSprite.flip_h=false
+					velocity.x = 80 * -direction
+				else:
+					direction = 1
+					$AnimatedSprite.flip_h=false
+					velocity.x = 80 * direction
 		
 		$AnimatedSprite.play("walk")
 		
 		velocity.y += GRAVITY
 		velocity = move_and_slide(velocity,FLOOR)
 		
-	if is_on_wall() || $RayCast2D.is_colliding()==false:
+	if is_on_wall() || $RayCast2D.is_colliding()==false && is_hit==false:
 		direction = direction * -1
 		$RayCast2D.position.x *= -1
 	
@@ -65,3 +98,13 @@ func _on_AnimatedSprite_animation_finished():
 		get_parent().add_child(coinInstance)
 		coinInstance.scale= Vector2(size.x/2,size.y/2)
 		coinInstance.position = $Position2D.global_position
+
+
+func _on_left_area_entered(area):
+	if "fireBall" in area.name:
+		hitDirection = "left"
+
+
+func _on_right_area_entered(area):
+	if "fireBall" in area.name:
+		hitDirection = "right"

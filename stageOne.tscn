@@ -127,6 +127,7 @@ _sections_unfolded = [ "Cell", "Transform" ]
 
 [node name="decoration" type="TileMap" parent="." index="3"]
 
+editor/display_folded = true
 mode = 0
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 16, 16 )
@@ -277,7 +278,7 @@ shape = SubResource( 4 )
 
 [node name="Player" parent="." index="5" instance=ExtResource( 10 )]
 
-position = Vector2( 47.1011, 72.6824 )
+position = Vector2( 48.256, 67.9877 )
 
 [node name="Enemy" parent="." index="6" instance=ExtResource( 11 )]
 
@@ -288,7 +289,7 @@ position = Vector2( 108.382, 77.4679 )
 position = Vector2( 359.832, -100.627 )
 _sections_unfolded = [ "Collision" ]
 size = Vector2( 3, 3 )
-health = 5
+health = 7
 attack = 3
 
 [node name="Enemy4" parent="." index="8" instance=ExtResource( 11 )]
@@ -300,7 +301,6 @@ position = Vector2( 496, -272 )
 position = Vector2( 404.77, 82.9048 )
 health = 3
 attack = 2
-size = Vector2( 1, 1 )
 
 [node name="movingPlatform" parent="." index="10" instance=ExtResource( 13 )]
 
@@ -362,8 +362,6 @@ bus = "Master"
 [connection signal="off_ladder" from="ladder/Area2D" to="Player" method="_on_Area2D_off_ladder"]
 
 [connection signal="on_ladder" from="ladder/Area2D" to="Player" method="_on_Area2D_on_ladder"]
-
-[connection signal="on_ladder" from="ladder/Area2D" to="decoration/StaticBody2D/CollisionShape2D" method="_on_Area2D_on_ladder"]
 
 [connection signal="healthChange" from="Player" to="CanvasLayer/lifeBar" method="_on_Player_healthChange"]
 
