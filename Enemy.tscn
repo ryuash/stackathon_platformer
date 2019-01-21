@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Enemy.gd" type="Script" id=1]
 [ext_resource path="res://stackathon-assets/sprite/row-2-col-11.png" type="Texture" id=2]
@@ -7,6 +7,9 @@
 [ext_resource path="res://stackathon-assets/sprite/row-2-col-2.png" type="Texture" id=5]
 [ext_resource path="res://stackathon-assets/sprite/row-2-col-3.png" type="Texture" id=6]
 [ext_resource path="res://stackathon-assets/sprite/row-2-col-4.png" type="Texture" id=7]
+[ext_resource path="res://lifeBar.tscn" type="PackedScene" id=8]
+[ext_resource path="res://stackathon-assets/music/enemyHurt.wav" type="AudioStream" id=9]
+[ext_resource path="res://stackathon-assets/music/enemyDead.wav" type="AudioStream" id=10]
 
 [sub_resource type="SpriteFrames" id=1]
 
@@ -27,7 +30,7 @@ animations = [ {
 custom_solver_bias = 0.0
 extents = Vector2( 3.76445, 10.6997 )
 
-[node name="Enemy" type="KinematicBody2D"]
+[node name="Enemy" type="KinematicBody2D" index="0"]
 
 input_pickable = false
 collision_layer = 1
@@ -58,5 +61,53 @@ exclude_parent = true
 cast_to = Vector2( 0, 16 )
 collision_mask = 1
 _sections_unfolded = [ "Transform" ]
+
+[node name="Control" type="Control" parent="." index="3"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 40.0
+margin_bottom = 40.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="lifeBar" parent="Control" index="0" instance=ExtResource( 8 )]
+
+margin_left = -13.0
+margin_top = -12.0
+margin_right = 31.0
+margin_bottom = 32.0
+rect_scale = Vector2( 0.25, 0.25 )
+_sections_unfolded = [ "Rect" ]
+
+[node name="hurt" type="AudioStreamPlayer" parent="." index="4"]
+
+stream = ExtResource( 9 )
+volume_db = -8.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="dead" type="AudioStreamPlayer" parent="." index="5"]
+
+stream = ExtResource( 10 )
+volume_db = -8.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Position2D" type="Position2D" parent="." index="6"]
+
+position = Vector2( 0, -13 )
+
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
 
 

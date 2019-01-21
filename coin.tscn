@@ -1,0 +1,82 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://coin.gd" type="Script" id=1]
+[ext_resource path="res://stackathon-assets/SMALL/SMALL_0000_Capa-1.png" type="Texture" id=2]
+[ext_resource path="res://stackathon-assets/SMALL/SMALL_0001_Capa-2.png" type="Texture" id=3]
+[ext_resource path="res://stackathon-assets/SMALL/SMALL_0002_Capa-3.png" type="Texture" id=4]
+[ext_resource path="res://stackathon-assets/SMALL/SMALL_0003_Capa-4.png" type="Texture" id=5]
+[ext_resource path="res://stackathon-assets/SMALL/SMALL_0004_Capa-5.png" type="Texture" id=6]
+[ext_resource path="res://stackathon-assets/SMALL/SMALL_0005_Capa-6.png" type="Texture" id=7]
+[ext_resource path="res://stackathon-assets/SMALL/SMALL_0006_Capa-7.png" type="Texture" id=8]
+[ext_resource path="res://stackathon-assets/SMALL/SMALL_0007_Capa-8.png" type="Texture" id=9]
+[ext_resource path="res://stackathon-assets/music/coin.wav" type="AudioStream" id=10]
+
+[sub_resource type="SpriteFrames" id=1]
+
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "spin",
+"speed": 8.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 8.06818, 10 )
+
+[sub_resource type="RectangleShape2D" id=3]
+
+custom_solver_bias = 0.0
+extents = Vector2( 8.04033, 10 )
+
+[node name="coin" type="KinematicBody2D"]
+
+scale = Vector2( 0.5774, 0.5774 )
+z_index = 10
+input_pickable = false
+collision_layer = 1
+collision_mask = 1
+collision/safe_margin = 0.08
+script = ExtResource( 1 )
+_sections_unfolded = [ "Transform", "Z Index" ]
+size = Vector2( 1, 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="." index="0"]
+
+frames = SubResource( 1 )
+animation = "spin"
+frame = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="1"]
+
+shape = SubResource( 2 )
+
+[node name="Area2D" type="Area2D" parent="." index="2"]
+
+input_pickable = true
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+audio_bus_override = false
+audio_bus_name = "Master"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+
+shape = SubResource( 3 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." index="3"]
+
+stream = ExtResource( 10 )
+volume_db = 0.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+
+[connection signal="finished" from="AudioStreamPlayer" to="." method="_on_AudioStreamPlayer_finished"]
+
+

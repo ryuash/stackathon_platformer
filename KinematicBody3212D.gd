@@ -4,7 +4,7 @@ extends KinematicBody2D
 # var a = 2
 # var b = "textvar"
 
-const SPEED = 30
+const SPEED = 50
 var velocity = Vector2()
 const FLOOR = Vector2(0,-1)
 var direction = 1

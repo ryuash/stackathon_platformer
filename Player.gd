@@ -16,16 +16,25 @@ var is_attacking = false
 var delay = 0.3
 var timer = null
 var winOrDieTimer = null
-var winOrDieDelay = 2
+var winOrDieDelay = 1.2
 var health = 10
 var cont = 0
 var text_actual = null
 var win = false
+var sceneChange
+var offScreen = false
 
 signal hit(pos)
 signal healthChange(health)
 
 func _ready():
+#	scene change animation
+	sceneChange = get_tree().get_root().get_node("stageOne/transitionCanvas/sceneTransition")
+	
+#	set character health
+	get_tree().get_root().get_node("stageOne/CanvasLayer/lifeBar").startHealth(10)
+
+#	set timers
 	timer = Timer.new()
 	timer.set_wait_time(delay)
 	timer.set_one_shot(true)
@@ -43,15 +52,16 @@ func on_time_complete():
 	
 func win_or_dead_time_complete():
 	#change back to title here
-	if(health>0):
+	if(health>0 && offScreen == false):
 		win = true
 		velocity = Vector2(0,0)
 		$AnimatedSprite.play("idle")
-		print("you won!")
+		text_actual.queue_free()
 #	change to title here
-	else:
-		print("you died")
-	text_actual.queue_free()
+	if is_dead:
+		text_actual.queue_free()
+	sceneChange.show()
+	sceneChange.fadeIn()
 
 func _physics_process(delta):
 	velocity.y+=GRAVITY
@@ -89,6 +99,7 @@ func _physics_process(delta):
 		if Input.is_action_just_pressed("ui_select") && is_attacking==false:
 				is_attacking=true
 				$AnimatedSprite.play("punch")
+				$AudioStreamPlayer.play()
 				#start timer for shooting delay
 				timer.start()
 				var shootInstance = FIREBALL.instance()
@@ -138,12 +149,10 @@ func _physics_process(delta):
 
 func _on_Area2D_on_ladder():
 	on_ladder=true
-	print("on ladder from player signal")
 
 
 func _on_Area2D_off_ladder():
 	on_ladder=false
-	print("off ladder")
 
 
 func _on_RayCast2D_onPlatform():
@@ -156,20 +165,20 @@ func _on_RayCast2D_offPlatform():
 #	GRAVITY=12
 
 func dead(attack):
-	print(attack,"attack from enemy")
 	health-=attack
 	emit_signal("healthChange",health)
 	if health <= 0 :
 		winOrDieTimer.start()
 		is_dead=true
+		$lose.play()
 		_speak("oh nos, you died")
 		velocity = Vector2(0,0)
 		$CollisionShape2D.disabled=true
 		$AnimatedSprite.play("idle")
-	print(health,"health")
+	else:
+		$hurt.play()
 	
 func _speak(text):
-	print("i hit speak")
 	var container_text = load("res://stackathon-assets/Text/Label.tscn").instance()
 	container_text._text(text)
 	add_child(container_text)
@@ -180,3 +189,14 @@ func win():
 		_speak("Congrats, you won")
 		winOrDieTimer.start()
 	
+
+
+func _on_sceneTransition_fade_finished():
+	sceneChange.hide()
+	get_tree().change_scene("titlePage.tscn")
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	offScreen = true
+	$lose.play()
+	winOrDieTimer.start()

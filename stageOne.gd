@@ -5,7 +5,7 @@ extends Node
 # var b = "textvar"
 
 func _ready():
-	print(get_position(),"position in moving platform")
-
+	$AudioStreamPlayer.play()
+	
 func _process(delta):
 	pass

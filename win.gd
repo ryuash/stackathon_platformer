@@ -17,6 +17,6 @@ func _ready():
 
 func _on_win_body_entered(body):
 	if "Player" in body.name:
+		$AudioStreamPlayer.play()
 		body.win()
 		$CollisionShape2D.disabled = true
-		print("true for winning")

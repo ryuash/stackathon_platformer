@@ -1,21 +1,25 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://stackathon-assets/sprite/row-3-col-2.png" type="Texture" id=2]
-[ext_resource path="res://stackathon-assets/sprite/row-3-col-21.png" type="Texture" id=3]
-[ext_resource path="res://stackathon-assets/sprite/row-3-col-5.png" type="Texture" id=4]
-[ext_resource path="res://stackathon-assets/sprite/row-3-col-6.png" type="Texture" id=5]
-[ext_resource path="res://stackathon-assets/sprite/row-3-col-1.png" type="Texture" id=6]
-[ext_resource path="res://stackathon-assets/sprite/row-3-col-3.png" type="Texture" id=7]
-[ext_resource path="res://stackathon-assets/sprite/row-3-col-4.png" type="Texture" id=8]
-[ext_resource path="res://stackathon-assets/sprite/row-3-col-12.png" type="Texture" id=9]
-[ext_resource path="res://stackathon-assets/sprite/row-3-col-11.png" type="Texture" id=10]
-[ext_resource path="res://stackathon-assets/sprite/row-3-col-13.png" type="Texture" id=11]
-[ext_resource path="res://stackathon-assets/sprite/row-3-col-20.png" type="Texture" id=12]
-[ext_resource path="res://stackathon-assets/sprite/row-3-col-22.png" type="Texture" id=13]
-[ext_resource path="res://stackathon-assets/sprite/row-3-col-23.png" type="Texture" id=14]
+[ext_resource path="res://stackathon-assets/sprite/row-3-col-1.png" type="Texture" id=3]
+[ext_resource path="res://stackathon-assets/sprite/row-3-col-3.png" type="Texture" id=4]
+[ext_resource path="res://stackathon-assets/sprite/row-3-col-4.png" type="Texture" id=5]
+[ext_resource path="res://stackathon-assets/sprite/row-3-col-5.png" type="Texture" id=6]
+[ext_resource path="res://stackathon-assets/sprite/row-3-col-6.png" type="Texture" id=7]
+[ext_resource path="res://stackathon-assets/sprite/row-3-col-20.png" type="Texture" id=8]
+[ext_resource path="res://stackathon-assets/sprite/row-3-col-21.png" type="Texture" id=9]
+[ext_resource path="res://stackathon-assets/sprite/row-3-col-22.png" type="Texture" id=10]
+[ext_resource path="res://stackathon-assets/sprite/row-3-col-23.png" type="Texture" id=11]
+[ext_resource path="res://stackathon-assets/sprite/row-3-col-12.png" type="Texture" id=12]
+[ext_resource path="res://stackathon-assets/sprite/row-3-col-11.png" type="Texture" id=13]
+[ext_resource path="res://stackathon-assets/sprite/row-3-col-13.png" type="Texture" id=14]
 [ext_resource path="res://stackathon-assets/sprite/row-3-col-14.png" type="Texture" id=15]
-[ext_resource path="res://RayCast2DPlayer.gd" type="Script" id=16]
+[ext_resource path="res://Camera2D.gd" type="Script" id=16]
+[ext_resource path="res://RayCast2DPlayer.gd" type="Script" id=17]
+[ext_resource path="res://stackathon-assets/music/Laser-Shot-1.wav" type="AudioStream" id=18]
+[ext_resource path="res://stackathon-assets/music/lose.wav" type="AudioStream" id=19]
+[ext_resource path="res://stackathon-assets/music/playerHurt.wav" type="AudioStream" id=20]
 
 [sub_resource type="SpriteFrames" id=1]
 
@@ -25,32 +29,32 @@ animations = [ {
 "name": "idle",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 3 ) ],
-"loop": false,
-"name": "climb-still",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 4 ), ExtResource( 5 ) ],
-"loop": false,
-"name": "jump",
-"speed": 5.0
-}, {
-"frames": [ ExtResource( 6 ), ExtResource( 2 ), ExtResource( 7 ), ExtResource( 8 ) ],
+"frames": [ ExtResource( 3 ), ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ) ],
 "loop": true,
 "name": "walk",
 "speed": 10.0
 }, {
-"frames": [ ExtResource( 9 ), ExtResource( 10 ), ExtResource( 9 ), ExtResource( 11 ) ],
-"loop": true,
-"name": "slash",
+"frames": [ ExtResource( 6 ), ExtResource( 7 ) ],
+"loop": false,
+"name": "jump",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 12 ), ExtResource( 3 ), ExtResource( 13 ), ExtResource( 14 ) ],
+"frames": [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ) ],
 "loop": true,
 "name": "climb",
 "speed": 10.0
 }, {
-"frames": [ ExtResource( 9 ), ExtResource( 15 ), ExtResource( 9 ) ],
+"frames": [ ExtResource( 12 ), ExtResource( 13 ), ExtResource( 12 ), ExtResource( 14 ) ],
+"loop": true,
+"name": "slash",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 9 ) ],
+"loop": false,
+"name": "climb-still",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 12 ), ExtResource( 15 ), ExtResource( 12 ) ],
 "loop": true,
 "name": "punch",
 "speed": 5.0
@@ -61,7 +65,7 @@ animations = [ {
 custom_solver_bias = 0.0
 extents = Vector2( 4.81873, 10.3574 )
 
-[node name="Player" type="KinematicBody2D" index="0"]
+[node name="Player" type="KinematicBody2D"]
 
 position = Vector2( 0, -0.0944672 )
 z_index = 5
@@ -99,7 +103,7 @@ limit_smoothed = false
 drag_margin_h_enabled = true
 drag_margin_v_enabled = true
 smoothing_enabled = true
-smoothing_speed = 5.0
+smoothing_speed = 10.0
 offset_v = 0.0
 offset_h = 0.0
 drag_margin_left = 0.2
@@ -109,7 +113,8 @@ drag_margin_bottom = 0.2
 editor_draw_screen = true
 editor_draw_limits = true
 editor_draw_drag_margin = false
-_sections_unfolded = [ "Limit", "Smoothing" ]
+script = ExtResource( 16 )
+_sections_unfolded = [ "Drag Margin", "Smoothing" ]
 
 [node name="RayCast2D" type="RayCast2D" parent="." index="3"]
 
@@ -117,7 +122,7 @@ enabled = true
 exclude_parent = true
 cast_to = Vector2( 0, 15 )
 collision_mask = 1
-script = ExtResource( 16 )
+script = ExtResource( 17 )
 
 [node name="Position2D" type="Position2D" parent="." index="4"]
 
@@ -141,8 +146,41 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." index="6"]
+
+stream = ExtResource( 18 )
+volume_db = -3.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="." index="7"]
+
+rect = Rect2( -10, -10, 20, 20 )
+
+[node name="lose" type="AudioStreamPlayer" parent="." index="8"]
+
+stream = ExtResource( 19 )
+volume_db = -8.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="hurt" type="AudioStreamPlayer" parent="." index="9"]
+
+stream = ExtResource( 20 )
+volume_db = -8.0
+pitch_scale = 1.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
 [connection signal="offPlatform" from="RayCast2D" to="." method="_on_RayCast2D_offPlatform"]
 
 [connection signal="onPlatform" from="RayCast2D" to="." method="_on_RayCast2D_onPlatform"]
+
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
 
 

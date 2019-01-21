@@ -11,7 +11,7 @@ config_version=3
 [application]
 
 config/name="Stackathon"
-run/main_scene="res://stageOne.tscn"
+run/main_scene="res://titlePage.tscn"
 config/icon="res://icon.png"
 
 [display]
